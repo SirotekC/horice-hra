@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2f6b4f">
+  <title>Hořice hravě</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+  <link rel="stylesheet" href="css/styl.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+
+  <!-- 1 · Úvod -->
+  <section id="uvod" class="obrazovka obrazovka--stred">
+    <div class="uvod-obsah">
+      <div class="uvod-ikona" aria-hidden="true">🗺️</div>
+      <h1 id="uvod-nazev">Hořice hravě</h1>
+      <p id="uvod-pro-koho"></p>
+      <p id="uvod-souhrn" class="souhrn"></p>
+      <p id="uvod-poznamka" class="poznamka"></p>
+      <p id="uvod-chyba" class="hlaska hlaska--chyba" hidden></p>
+    </div>
+    <div class="tlacitka">
+      <span id="uvod-demo-stitek" class="stitek-demo stitek-demo--uvod" hidden>Ukázkový režim</span>
+      <button id="btn-pokracovat" class="btn btn--hlavni" type="button" hidden>▶ Pokračovat</button>
+      <button id="btn-znovu" class="btn btn--vedlejsi" type="button" hidden>Začít znovu</button>
+      <button id="btn-vyrazit" class="btn btn--hlavni" type="button" disabled>▶ Vyrazit</button>
+      <button id="btn-ukazka" class="btn btn--maly" type="button" disabled>Ukázka u stolu</button>
+      <button id="btn-naostro" class="btn btn--maly" type="button" hidden>Hrát se skutečnou polohou</button>
+    </div>
+  </section>
+
+  <!-- 2 · Mapa -->
+  <section id="mapa" class="obrazovka obrazovka--mapa" hidden>
+    <header class="lista">
+      <span id="mapa-zastaveni">Zastavení 1/3</span>
+      <span id="mapa-hvezdy">⭐ 0</span>
+    </header>
+    <div class="mapa-obal">
+      <div id="mapa-platno" class="mapa-platno"></div>
+      <span id="mapa-demo-stitek" class="stitek-demo" hidden>Ukázkový režim</span>
+    </div>
+    <div class="karta karta--cil">
+      <div id="mapa-chyba" class="hlaska hlaska--chyba" hidden>
+        <p id="mapa-chyba-text"></p>
+        <button id="btn-na-ukazku" class="btn btn--vedlejsi" type="button">Přepnout na ukázku</button>
+      </div>
+      <p id="mapa-presnost" class="hlaska" hidden>GPS je teď nepřesná, chvilku počkejte.</p>
+      <p class="cil-nazev" id="mapa-cil"></p>
+      <p class="cil-vzdalenost" id="mapa-vzdalenost">Hledám vaši polohu…</p>
+      <button id="btn-jsme-tady" class="btn btn--hlavni" type="button" hidden>📍 Jsme tady</button>
+      <button id="btn-dojit" class="btn btn--demo" type="button" hidden>Dojít k dalšímu zastavení</button>
+      <p id="mapa-demo-napoveda" class="drobne" hidden>Klepnutím do mapy přesunete hráče.</p>
+      <p class="drobne">Při chůzi se dívejte kolem sebe, ne do telefonu.</p>
+    </div>
+  </section>
+
+  <!-- 3 · Na místě -->
+  <section id="misto" class="obrazovka" hidden>
+    <header class="lista">
+      <span class="lista-zastaveni">Zastavení 1/3</span>
+      <span class="lista-hvezdy">⭐ 0</span>
+    </header>
+    <div class="posuvne">
+      <img id="misto-obrazek" class="misto-obrazek" src="img/zastupny.svg" alt="">
+      <div class="karta">
+        <p class="misto-hura">🎉 Jsme na místě!</p>
+        <h2 id="misto-nazev"></h2>
+        <p id="misto-text"></p>
+      </div>
+    </div>
+    <div class="tlacitka">
+      <button id="btn-otevrit-ukol" class="btn btn--hlavni" type="button">🔓 Otevřít úkol</button>
+    </div>
+  </section>
+
+  <!-- 4 · Úkol -->
+  <section id="ukol" class="obrazovka" hidden>
+    <header class="lista">
+      <span id="ukol-poradi">Úkol 1/3</span>
+      <span class="lista-hvezdy">⭐ 0</span>
+    </header>
+    <div class="posuvne">
+      <div class="karta">
+        <p id="ukol-zadani" class="zadani"></p>
+      </div>
+      <div class="karta odpoved">
+        <input id="odpoved-cislo" class="pole pole--cislo" type="text" inputmode="numeric"
+               autocomplete="off" aria-label="Odpověď (číslo)" hidden>
+        <textarea id="odpoved-text" class="pole pole--text" rows="3"
+                  aria-label="Odpověď" hidden></textarea>
+        <div id="odpoved-foto" hidden>
+          <label class="btn btn--vedlejsi btn--foto">
+            📷 <span id="foto-popisek">Vyfotit</span>
+            <input id="odpoved-foto-vstup" type="file" accept="image/*" capture="environment">
+          </label>
+          <img id="foto-nahled" class="foto-nahled" alt="Vaše fotka" hidden>
+        </div>
+      </div>
+      <p id="ukol-napoveda" class="karta napoveda" hidden></p>
+    </div>
+    <div class="tlacitka">
+      <button id="btn-hotovo" class="btn btn--hlavni" type="button" disabled>Hotovo ✓</button>
+      <button id="btn-napoveda" class="btn btn--maly" type="button">💡 Nápověda</button>
+    </div>
+  </section>
+
+  <!-- 5 · Konec -->
+  <section id="konec" class="obrazovka obrazovka--stred" hidden>
+    <div class="uvod-obsah">
+      <div class="uvod-ikona" aria-hidden="true">🏅</div>
+      <h1>Hotovo, objevitelé!</h1>
+      <p id="konec-hvezdy" class="konec-hvezdy"></p>
+      <div id="konec-fotky" class="konec-fotky" hidden>
+        <div id="konec-fotky-mrizka" class="fotky-mrizka"></div>
+        <p class="drobne">Vaše fotky z cesty. Zůstávají jen v tomto telefonu.</p>
+      </div>
+      <p class="poznamka">Diplom nebo odměna v infocentru – připravujeme</p>
+    </div>
+    <div class="tlacitka">
+      <button id="btn-hrat-znovu" class="btn btn--hlavni" type="button">Hrát znovu</button>
+    </div>
+  </section>
+
+</body>
+</html>

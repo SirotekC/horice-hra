@@ -1,0 +1,351 @@
+/* Hořice hravě – vzhled podle odsouhlaseného náčrtu obrazovek. */
+
+:root {
+  --zelena: #2f6b4f;
+  --oranzova: #e8892b;
+  --oranzova-tmava: #c96f17;
+  --pozadi: #f6f3ea;
+  --fialova: #7b3fa0;
+  --modra: #2b7de8;
+  --text: #222;
+  --text-slaby: #5f5f5f;
+  --karta: #fff;
+  --cervena: #b3261e;
+  --stin: 0 1px 4px rgba(0, 0, 0, 0.18);
+  --vyska: 100vh;
+}
+
+@supports (height: 100dvh) {
+  :root { --vyska: 100dvh; }
+}
+
+* { box-sizing: border-box; }
+
+[hidden] { display: none !important; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  background: var(--pozadi);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 18px;
+  line-height: 1.45;
+  -webkit-text-size-adjust: 100%;
+}
+
+h1, h2, p { margin: 0; }
+
+/* ---------- Obrazovky ---------- */
+
+.obrazovka {
+  display: flex;
+  flex-direction: column;
+  height: var(--vyska);
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.obrazovka--stred .uvod-obsah {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 24px 20px 8px;
+  text-align: center;
+  overflow-y: auto;
+}
+
+.uvod-ikona { font-size: 56px; line-height: 1; }
+
+h1 { font-size: 30px; font-weight: 800; color: var(--zelena); }
+
+.souhrn {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+}
+
+.souhrn span {
+  background: #fff;
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-weight: 600;
+  box-shadow: var(--stin);
+}
+
+.poznamka { font-size: 16px; color: var(--text-slaby); max-width: 32em; }
+
+.drobne { font-size: 14px; color: var(--text-slaby); text-align: center; }
+
+.posuvne {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 8px;
+}
+
+/* ---------- Lišta ---------- */
+
+.lista {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--zelena);
+  color: #fff;
+  font-weight: 700;
+  padding: 10px 16px;
+  padding-top: max(10px, env(safe-area-inset-top));
+  font-size: 18px;
+}
+
+/* ---------- Tlačítka ---------- */
+
+.tlacitka {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  padding: 12px 16px;
+  padding-bottom: max(16px, env(safe-area-inset-bottom));
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 56px;
+  padding: 12px 18px;
+  border: none;
+  border-radius: 14px;
+  font: inherit;
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn:focus-visible { outline: 3px solid var(--modra); outline-offset: 2px; }
+
+.btn--hlavni { background: var(--oranzova); color: #fff; }
+.btn--hlavni:active { background: var(--oranzova-tmava); }
+
+.btn--vedlejsi {
+  background: #fff;
+  color: var(--zelena);
+  border: 2px solid var(--zelena);
+}
+
+.btn--maly {
+  min-height: 48px;
+  font-size: 17px;
+  font-weight: 600;
+  background: transparent;
+  color: var(--text-slaby);
+  border: 2px dashed #a9a9a9;
+}
+
+.btn--demo { background: var(--fialova); color: #fff; min-height: 48px; font-size: 18px; }
+
+.btn:disabled {
+  background: #d6d2c8;
+  color: #8a867d;
+  border-color: #d6d2c8;
+  cursor: not-allowed;
+}
+
+/* ---------- Karty a hlášky ---------- */
+
+.karta {
+  background: var(--karta);
+  border-radius: 14px;
+  box-shadow: var(--stin);
+  margin: 12px 16px 0;
+  padding: 14px 16px;
+}
+
+.misto-hura { font-size: 18px; font-weight: 700; color: var(--oranzova-tmava); margin-bottom: 2px; }
+
+.karta h2 { font-size: 22px; margin-bottom: 6px; color: var(--zelena); }
+
+.hlaska {
+  background: #fff4e0;
+  border-left: 5px solid var(--oranzova);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 16px;
+}
+
+.hlaska--chyba {
+  background: #fdecea;
+  border-left-color: var(--cervena);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.stitek-demo {
+  background: var(--fialova);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 10px;
+}
+
+.stitek-demo--uvod { align-self: center; }
+
+/* ---------- Mapa ---------- */
+
+.obrazovka--mapa { max-width: none; }
+
+.mapa-obal {
+  position: relative;
+  flex: 1;
+  min-height: 160px;
+}
+
+.mapa-platno {
+  position: absolute;
+  inset: 0;
+  background: #e8e6dd;
+}
+
+.mapa-obal .stitek-demo {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1000;
+  box-shadow: var(--stin);
+}
+
+.mapa-nedostupna {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 20px;
+  text-align: center;
+  color: var(--text-slaby);
+}
+
+.karta--cil {
+  margin: 0;
+  border-radius: 18px 18px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-bottom: max(12px, env(safe-area-inset-bottom));
+  max-width: 560px;
+  width: 100%;
+  align-self: center;
+}
+
+.cil-nazev { font-size: 20px; font-weight: 800; color: var(--zelena); }
+.cil-vzdalenost { font-size: 18px; }
+.cil-vzdalenost b { font-size: 24px; }
+
+.mapa-logo img { display: block; width: 100px; height: auto; }
+
+/* Značky zastavení */
+.znacka {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+  color: #fff;
+  font-weight: 800;
+  font-family: system-ui, sans-serif;
+}
+
+.znacka--splnena { background: var(--zelena); font-size: 16px; }
+.znacka--aktualni { background: var(--oranzova); font-size: 20px; }
+.znacka--budouci { background: #9b978d; font-size: 15px; }
+
+/* ---------- Na místě ---------- */
+
+.misto-obrazek {
+  display: block;
+  width: 100%;
+  max-height: 42vh;
+  object-fit: cover;
+  background: #cbbfa6;
+}
+
+/* ---------- Úkol ---------- */
+
+.zadani { font-size: 21px; font-weight: 600; }
+
+.odpoved,
+#odpoved-foto { display: flex; flex-direction: column; align-items: stretch; gap: 12px; }
+
+.pole {
+  width: 100%;
+  font: inherit;
+  border: 2px solid #bdb8ad;
+  border-radius: 12px;
+  padding: 10px 12px;
+  background: #fff;
+  color: var(--text);
+}
+
+.pole:focus { outline: none; border-color: var(--oranzova); }
+
+.pole--cislo {
+  font-size: 40px;
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: 4px;
+}
+
+.pole--text { font-size: 20px; resize: vertical; }
+
+.btn--foto { position: relative; overflow: hidden; }
+
+.btn--foto input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.foto-nahled {
+  display: block;
+  width: 100%;
+  max-height: 40vh;
+  object-fit: contain;
+  border-radius: 10px;
+  background: #eee;
+}
+
+.napoveda { background: #fffbe6; }
+
+/* ---------- Konec ---------- */
+
+.konec-hvezdy { font-size: 22px; font-weight: 700; }
+
+.konec-fotky { display: flex; flex-direction: column; gap: 6px; }
+
+.fotky-mrizka {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.fotky-mrizka img {
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: var(--stin);
+}

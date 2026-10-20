@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" role="img" aria-label="Fotka místa bude doplněna">
+  <rect width="400" height="240" fill="#cfe3ef"/>
+  <circle cx="320" cy="58" r="26" fill="#f6c453"/>
+  <path d="M0 170 Q90 110 180 160 T400 140 V240 H0 Z" fill="#8fbf8a"/>
+  <path d="M0 200 Q120 160 240 195 T400 185 V240 H0 Z" fill="#5f9e6e"/>
+  <g transform="translate(176 92)">
+    <path d="M24 0C10.7 0 0 10.4 0 23.3 0 40.8 24 62 24 62s24-21.2 24-38.7C48 10.4 37.3 0 24 0z" fill="#e8892b" stroke="#fff" stroke-width="3"/>
+    <circle cx="24" cy="23" r="9" fill="#fff"/>
+  </g>
+  <text x="200" y="226" font-family="system-ui, sans-serif" font-size="15" fill="#2f4f3f" text-anchor="middle">Fotka místa bude doplněna</text>
+</svg>
