@@ -18,3 +18,7 @@ Po úpravě spusť kontrolu:
 ```
 npm run validate && npm test
 ```
+
+## Nasazení a testování
+
+Web se po pushi do `main` nasadí na GitHub Pages: <https://sirotekc.github.io/horice-hra/>. Ruční test na telefonech popisuje [docs/testovaci-scenar.md](docs/testovaci-scenar.md).
