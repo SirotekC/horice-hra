@@ -4,21 +4,44 @@
   "pro_koho": "Pro malé objevitele (5–10 let)",
   "delka_km": 1.5,
   "cas_min": 60,
-  "poznamka_pro_rodice": "Trasa vede po chodnících a parkem, přechody je potřeba hlídat. Děti úkoly řeší samy, vy je můžete jen nasměrovat. Foto zůstává jen ve vašem telefonu.",
+  "poznamka_pro_rodice": "Hra je pro děti s doprovodem dospělého. Při chůzi hlídejte děti a dávejte pozor na provoz. Foto zůstává jen ve vašem telefonu.",
   "polomer_odemceni_m": 30,
   "polomer_tlacitka_m": 80,
-  "cara": [[50.368796,15.632712],[50.368276,15.632804],[50.367467,15.632723],[50.367375,15.633903],[50.367346,15.635402],[50.367054,15.637961],[50.366969,15.639598],[50.366821,15.639667],[50.366852,15.639783],[50.366564,15.639691],[50.366634,15.640098],[50.366487,15.640257],[50.366634,15.640098],[50.366564,15.639691],[50.366852,15.639783],[50.366886,15.639968],[50.365966,15.64167],[50.3657,15.642548],[50.365526,15.643359],[50.365167,15.644034],[50.365006,15.643877],[50.364949,15.644933]],
+  "cara": [
+    [50.368796, 15.632712],
+    [50.368276, 15.632804],
+    [50.367467, 15.632723],
+    [50.367375, 15.633903],
+    [50.367346, 15.635402],
+    [50.367054, 15.637961],
+    [50.366969, 15.639598],
+    [50.366821, 15.639667],
+    [50.366852, 15.639783],
+    [50.366564, 15.639691],
+    [50.366634, 15.640098],
+    [50.366487, 15.640257],
+    [50.366634, 15.640098],
+    [50.366564, 15.639691],
+    [50.366852, 15.639783],
+    [50.366886, 15.639968],
+    [50.365966, 15.64167],
+    [50.3657, 15.642548],
+    [50.365526, 15.643359],
+    [50.365167, 15.644034],
+    [50.365006, 15.643877],
+    [50.364949, 15.644933]
+  ],
   "zastaveni": [
     {
       "id": "namesti",
       "nazev": "Náměstí Jiřího z Poděbrad",
       "poloha": [50.3688, 15.6327],
       "obrazek": null,
-      "text": "Tady začíná naše hra. Náměstí je srdce města, lidé se tu potkávají a stojí tu radnice.",
+      "text": "Tady začíná naše hra. Rozhlédněte se kolem sebe.",
       "ukol": {
         "typ": "cislo",
         "zadani": "Najdi na radnici cedulku s číslem popisným. Jaké číslo tam je?",
-        "napoveda": "Cedulka bývá vedle hlavního vchodu. Podívej se na zeď u dveří."
+        "napoveda": "Rozhlédněte se pořádně kolem sebe."
       }
     },
     {
@@ -26,11 +49,11 @@
       "nazev": "Smetanovy sady – socha Krakonoše",
       "poloha": [50.366499, 15.640336],
       "obrazek": null,
-      "text": "Teď jsme v parku. Je tu klid, stromy a lavičky. Hlídá ho Krakonoš, vládce hor.",
+      "text": "Teď jsme ve Smetanových sadech. Hledáme Krakonoše, vládce hor.",
       "ukol": {
         "typ": "foto",
         "zadani": "Najdi v parku Krakonoše, vládce hor, a vyfoť se s ním!",
-        "napoveda": "Krakonoš je socha. Rozhlédni se po parku a hledej vousatou postavu."
+        "napoveda": "Rozhlédněte se pořádně kolem sebe."
       }
     },
     {
@@ -38,11 +61,11 @@
       "nazev": "Hřbitovní portál na Gothardu",
       "poloha": [50.364934, 15.644933],
       "obrazek": null,
-      "text": "Poslední zastavení je u staré brány. Je to klidné místo, tak tu mluvíme potichu.",
+      "text": "Poslední zastavení. Tady mluvíme potichu.",
       "ukol": {
         "typ": "text",
         "zadani": "Nad branou je nápis. Opište ho spolu.",
-        "napoveda": "Podívej se nahoru, nad oblouk brány."
+        "napoveda": "Rozhlédněte se pořádně kolem sebe."
       }
     }
   ]
