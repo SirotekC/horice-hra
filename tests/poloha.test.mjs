@@ -97,9 +97,66 @@ test('nová jdiK zruší předchozí chůzi', async () => {
   const polohy = [];
   const s = spustSimulaci({ start: NAMESTI, onPoloha: (p) => polohy.push(p) });
   const prvni = s.jdiK(PORTAL, { krokM: 10, intervalMs: 0 });
+  await new Promise((r) => setTimeout(r, 5));
   const druha = s.jdiK(NAMESTI, { krokM: 10, intervalMs: 0 });
+  const n = polohy.length;
   await Promise.all([prvni, druha]);
   assert.deepEqual(polohy.at(-1).latlng, NAMESTI);
+  // po vytlačení první chůze už nesmí nic poslat směrem k PORTAL
+  for (const p of polohy.slice(n)) {
+    assert.ok(vzdalenost(p.latlng, PORTAL) >= vzdalenost(NAMESTI, PORTAL) - 1000);
+  }
+  assert.ok(polohy.slice(n).every((p) => vzdalenost(p.latlng, NAMESTI) < 1200));
+});
+
+test('zastav zavolané z onPoloha uprostřed chůze zastaví další polohy', async () => {
+  const polohy = [];
+  let s;
+  s = spustSimulaci({
+    start: NAMESTI,
+    onPoloha: (p) => {
+      polohy.push(p);
+      if (polohy.length === 3) s.zastav();
+    },
+  });
+  await s.jdiK(PORTAL, { krokM: 10, intervalMs: 0 });
+  await new Promise((r) => setTimeout(r, 20));
+  assert.equal(polohy.length, 3);
+});
+
+test('jdiK zavolané z onPoloha nahradí chůzi, stará už nic neposílá', async () => {
+  const polohy = [];
+  let s;
+  let prepnuto = false;
+  s = spustSimulaci({
+    start: NAMESTI,
+    onPoloha: (p) => {
+      polohy.push(p);
+      if (polohy.length === 3 && !prepnuto) {
+        prepnuto = true;
+        s.jdiK(NAMESTI, { krokM: 10, intervalMs: 0 });
+      }
+    },
+  });
+  await s.jdiK(PORTAL, { krokM: 10, intervalMs: 0 });
+  await new Promise((r) => setTimeout(r, 50));
+  // poloha 3 je 20 m od náměstí; nová chůze míří zpět a nikdy nepřekročí vzdálenost 20 m
+  for (const p of polohy.slice(3)) assert.ok(vzdalenost(NAMESTI, p.latlng) <= 21);
+  assert.deepEqual(polohy.at(-1).latlng, NAMESTI);
+});
+
+test('nastav během chůze chůzi zruší', async () => {
+  const polohy = [];
+  const s = spustSimulaci({ start: NAMESTI, onPoloha: (p) => polohy.push(p) });
+  const chuze = s.jdiK(PORTAL, { krokM: 10, intervalMs: 0 });
+  await new Promise((r) => setTimeout(r, 5));
+  s.nastav(NAMESTI);
+  const n = polohy.length;
+  await chuze;
+  await new Promise((r) => setTimeout(r, 20));
+  assert.equal(polohy.length, n);
+  assert.deepEqual(polohy.at(-1).latlng, NAMESTI);
+  s.zastav();
 });
 
 test('po zastav už nechodí a nevolá onPoloha', async () => {

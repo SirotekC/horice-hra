@@ -77,15 +77,20 @@ export function spustSimulaci({ start, onPoloha }) {
       zrus();
       return new Promise((hotovo) => {
         let casovac = null;
+        let zruseno = false;
         const skonci = () => {
+          zruseno = true;
           clearTimeout(casovac);
           if (zrusChuzi === skonci) zrusChuzi = null;
           hotovo();
         };
         zrusChuzi = skonci;
         const krok = () => {
+          if (zruseno) return;
           aktualni = posunKCili(aktualni, cil, krokM);
           posli();
+          // onPoloha mohl chůzi zrušit (zastav, nastav, jdiK) – pak nic nenaplánujeme
+          if (zruseno) return;
           if (aktualni[0] === cil[0] && aktualni[1] === cil[1]) skonci();
           else casovac = setTimeout(krok, intervalMs);
         };
