@@ -3,9 +3,23 @@
 const ORANZOVA = '#e8892b';
 const MODRA = '#2b7de8';
 
-/** Podklad Mapy.com včetně povinného uvedení zdroje a loga (vlevo dole). */
+/** Kolik chyb dlaždic Mapy.com (před první úspěšnou) stačí k přepnutí na OpenStreetMap. */
+const CHYB_DLAZDIC_PRO_ZALOHU = 3;
+
+function pridejPodkladOsm(mapa) {
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution:
+      '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap contributors</a>',
+  }).addTo(mapa);
+}
+
+/**
+ * Podklad Mapy.com včetně povinného uvedení zdroje a loga (vlevo dole).
+ * Když se dlaždice vůbec nenačítají (např. neplatný klíč), přepne se jednou na OpenStreetMap.
+ */
 function pridejPodkladMapyCom(mapa, apiKey) {
-  L.tileLayer(
+  const vrstva = L.tileLayer(
     `https://api.mapy.com/v1/maptiles/basic/256/{z}/{x}/{y}?apikey=${encodeURIComponent(apiKey)}`,
     {
       minZoom: 0,
@@ -27,14 +41,19 @@ function pridejPodkladMapyCom(mapa, apiKey) {
       return odkaz;
     },
   });
-  new Logo().addTo(mapa);
-}
+  const logo = new Logo().addTo(mapa);
 
-function pridejPodkladOsm(mapa) {
-  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; OpenStreetMap',
-  }).addTo(mapa);
+  let chyby = 0;
+  const priChybeDlazdice = () => {
+    chyby += 1;
+    if (chyby < CHYB_DLAZDIC_PRO_ZALOHU) return;
+    vrstva.off('tileerror', priChybeDlazdice);
+    mapa.removeLayer(vrstva);
+    mapa.removeControl(logo);
+    pridejPodkladOsm(mapa);
+  };
+  vrstva.on('tileerror', priChybeDlazdice);
+  vrstva.once('tileload', () => vrstva.off('tileerror', priChybeDlazdice));
 }
 
 /** Značka zastavení: "splnena" (✓), "aktualni" (větší, oranžová) nebo "budouci" (šedá). */
@@ -48,6 +67,25 @@ function ikonaZastaveni(poradi, stav) {
   });
 }
 
+/** Tlačítko „📍 Kde jsem“ pod přiblížením mapy. */
+function pridejTlacitkoKdeJsem(mapa, poKlepnuti) {
+  const KdeJsem = L.Control.extend({
+    options: { position: 'topleft' },
+    onAdd() {
+      const obal = L.DomUtil.create('div', 'leaflet-bar mapa-kde-jsem');
+      const tlacitko = L.DomUtil.create('button', '', obal);
+      tlacitko.type = 'button';
+      tlacitko.textContent = '📍';
+      tlacitko.title = 'Kde jsem';
+      tlacitko.setAttribute('aria-label', 'Kde jsem');
+      L.DomEvent.disableClickPropagation(obal);
+      L.DomEvent.on(tlacitko, 'click', poKlepnuti);
+      return obal;
+    },
+  });
+  new KdeJsem().addTo(mapa);
+}
+
 /**
  * Vytvoří mapu hry v daném prvku (prvek musí být viditelný, aby šla trasa přizpůsobit).
  * @param {HTMLElement} element
@@ -55,6 +93,7 @@ function ikonaZastaveni(poradi, stav) {
  * @returns {{
  *   ukazHrace(poloha: import('./poloha.js').Poloha): void,
  *   ukazCil(zastaveni: object | null): void,
+ *   ukazHraceACil(): void,
  *   onKlik(fn: (latlng: [number, number]) => void): void
  * }}
  */
@@ -95,9 +134,33 @@ export function vytvorMapu(element, { trasa, apiKey }) {
 
   let tecka = null;
   let kruhPresnosti = null;
+  let hrac = null; // poslední poloha hráče [lat, lng]
+  let cil = null; // aktuální zastavení
+  // Po první poloze a po změně cíle jednou ukážeme hráče i cíl, pokud je hráč mimo výřez.
+  let zkontrolovatVyrez = true;
+
+  /** Přiblíží mapu tak, aby byl vidět hráč i cíl (co z toho je známé). */
+  function ukazHraceACil() {
+    const ciloveBody = [hrac, cil?.poloha].filter(Boolean);
+    if (ciloveBody.length === 0) return;
+    mapa.invalidateSize({ pan: false }); // mapa mohla být skrytá
+    mapa.fitBounds(L.latLngBounds(ciloveBody), { padding: [50, 50], maxZoom: 17 });
+  }
+
+  function zkontrolujVyrez() {
+    if (!zkontrolovatVyrez || !hrac) return;
+    mapa.invalidateSize({ pan: false });
+    const velikost = mapa.getSize();
+    if (velikost.x === 0 || velikost.y === 0) return; // skrytá mapa – zkusíme při další poloze
+    zkontrolovatVyrez = false;
+    if (!mapa.getBounds().contains(hrac)) ukazHraceACil();
+  }
+
+  pridejTlacitkoKdeJsem(mapa, ukazHraceACil);
 
   return {
     ukazHrace({ latlng, presnost }) {
+      hrac = latlng;
       if (!tecka) {
         kruhPresnosti = L.circle(latlng, {
           radius: presnost,
@@ -117,13 +180,16 @@ export function vytvorMapu(element, { trasa, apiKey }) {
           interactive: false,
           pane: 'hrac',
         }).addTo(mapa);
-        return;
+      } else {
+        tecka.setLatLng(latlng);
+        kruhPresnosti.setLatLng(latlng).setRadius(presnost);
       }
-      tecka.setLatLng(latlng);
-      kruhPresnosti.setLatLng(latlng).setRadius(presnost);
+      zkontrolujVyrez();
     },
 
     ukazCil(zastaveni) {
+      if ((zastaveni?.id ?? null) !== (cil?.id ?? null)) zkontrolovatVyrez = true;
+      cil = zastaveni;
       const indexCile = zastaveni
         ? trasa.zastaveni.findIndex((z) => z.id === zastaveni.id)
         : trasa.zastaveni.length;
@@ -133,6 +199,8 @@ export function vytvorMapu(element, { trasa, apiKey }) {
         znacka.setZIndexOffset(stav === 'aktualni' ? 1000 : 0);
       });
     },
+
+    ukazHraceACil,
 
     onKlik(fn) {
       mapa.on('click', (e) => fn([e.latlng.lat, e.latlng.lng]));

@@ -183,12 +183,15 @@ h1 { font-size: 30px; font-weight: 800; color: var(--zelena); }
   font-size: 16px;
 }
 
-.hlaska--chyba {
-  background: #fdecea;
-  border-left-color: var(--cervena);
+.hlaska--s-tlacitkem {
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+
+.hlaska--chyba {
+  background: #fdecea;
+  border-left-color: var(--cervena);
 }
 
 .stitek-demo {
@@ -204,7 +207,10 @@ h1 { font-size: 30px; font-weight: 800; color: var(--zelena); }
 
 .odkaz-ukazka {
   align-self: center;
-  padding: 6px 10px;
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0 12px;
   font-size: 15px;
   color: var(--text-slaby);
 }
@@ -260,6 +266,22 @@ h1 { font-size: 30px; font-weight: 800; color: var(--zelena); }
 .cil-vzdalenost b { font-size: 24px; }
 
 .mapa-logo img { display: block; width: 100px; height: auto; }
+
+/* Tlačítko „Kde jsem“ pod přiblížením mapy */
+.mapa-kde-jsem button {
+  display: block;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: none;
+  border-radius: 4px;
+  background: #fff;
+  font-size: 24px;
+  line-height: 48px;
+  cursor: pointer;
+}
+
+.mapa-kde-jsem button:focus-visible { outline: 3px solid var(--modra); outline-offset: 2px; }
 
 /* Značky zastavení */
 .znacka {

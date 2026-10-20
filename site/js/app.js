@@ -10,6 +10,9 @@ import { novaHra, odpovez, aktualniZastaveni, klicUloziste, uloz, nacti } from '
 /** Jak daleko před prvním zastavením začíná simulovaná chůze (m). */
 const START_SIMULACE_M = 150;
 
+/** Horší přesnost (m) znamená, že telefon posílá jen přibližnou polohu (Android „Přibližná“, iOS bez přesné polohy). */
+const PRIBLIZNA_POLOHA_M = 200;
+
 const $ = (id) => document.getElementById(id);
 
 // Úložiště může být v soukromém režimu nedostupné – pak hra jede jen v paměti.
@@ -92,9 +95,11 @@ function vykresliUvod() {
   );
 
   const ulozeny = nacti(uloziste, klic(), t);
-  $('btn-pokracovat').hidden = !ulozeny;
-  $('btn-znovu').hidden = !ulozeny;
-  $('btn-vyrazit').hidden = Boolean(ulozeny);
+  const rozehrany = Boolean(ulozeny) && !ulozeny.dokonceno;
+  $('btn-pokracovat').hidden = !rozehrany;
+  $('btn-znovu').hidden = !rozehrany;
+  $('btn-vyrazit').hidden = rozehrany;
+  $('btn-vyrazit').textContent = ulozeny?.dokonceno ? '▶ Hrát znovu' : '▶ Vyrazit';
   $('btn-vyrazit').disabled = false;
   $('btn-ukazka').hidden = hra.demo;
   $('btn-ukazka').disabled = false;
@@ -129,6 +134,7 @@ function zastavZdroj() {
 /** Spustí zdroj polohy. GPS se musí spustit přímo v obsluze klepnutí (iOS). */
 function spustZdroj() {
   zastavZdroj();
+  $('mapa-chyba').hidden = true; // hláška patřila předchozímu zdroji
   if (hra.demo) {
     hra.zdroj = spustSimulaci({ start: startSimulace(), onPoloha: priPoloze });
   } else {
@@ -151,11 +157,20 @@ function priPoloze(poloha) {
 }
 
 function priChybePolohy({ kod }) {
-  const dalsi =
-    kod === 'zamitnuto'
-      ? 'Povolte polohu pro tuto stránku v nastavení prohlížeče.'
-      : 'Zkuste to za chvilku, nejlépe venku pod širým nebem.';
-  $('mapa-chyba-text').textContent = `Polohu se nepodařilo zjistit. ${dalsi}`;
+  // Timeout jen znamená, že nová poloha ještě nepřišla – sledování běží dál.
+  const jenHledam = kod === 'timeout';
+  let text = 'Hledám polohu…';
+  if (!jenHledam) {
+    const dalsi =
+      kod === 'zamitnuto'
+        ? 'Povolte polohu pro tuto stránku v nastavení prohlížeče.'
+        : 'Zkuste to za chvilku, nejlépe venku pod širým nebem.';
+    text = `Polohu se nepodařilo zjistit. ${dalsi}`;
+  }
+  $('mapa-chyba-text').textContent = text;
+  $('mapa-chyba').classList.toggle('hlaska--chyba', !jenHledam);
+  $('btn-na-ukazku').classList.toggle('btn--vedlejsi', !jenHledam);
+  $('btn-na-ukazku').classList.toggle('btn--maly', jenHledam);
   $('mapa-chyba').hidden = false;
 }
 
@@ -201,8 +216,17 @@ function aktualizujKartuCile() {
   const vzd = $('mapa-vzdalenost');
   vzd.textContent = 'Ještě ';
   vzd.append(Object.assign(document.createElement('b'), { textContent: formatVzdalenost(metru) }));
+
+  // Přibližná poloha (~1–3 km) nikdy nedovolí automatické odemčení – nabídneme cestu ven.
+  const jenPriblizna = p.presnost > PRIBLIZNA_POLOHA_M;
+  $('mapa-presnost-text').textContent = jenPriblizna
+    ? 'Telefon posílá jen přibližnou polohu. Zapněte v nastavení přesnou polohu.'
+    : 'GPS je teď nepřesná, chvilku počkejte.';
+  $('btn-presnost-ukazka').hidden = !jenPriblizna;
   $('mapa-presnost').hidden = p.presnost <= MAX_PRESNOST_M;
-  $('btn-jsme-tady').hidden = priblizeni === 'daleko';
+  // „Jsme tady“ do poloměru tlačítka, počítáno i s nepřesností GPS (a vždy při přibližné poloze).
+  const moznaBlizko = metru - p.presnost <= hra.trasa.polomer_tlacitka_m;
+  $('btn-jsme-tady').hidden = !moznaBlizko && !jenPriblizna;
   return priblizeni;
 }
 
@@ -368,14 +392,15 @@ function propojTlacitka() {
     vykresliUvod();
   });
 
-  $('btn-na-ukazku').addEventListener('click', () => {
+  const prepniNaUkazku = () => {
     // Pokračuje se ze stejného zastavení; ostrý postup zůstane uložený beze změny.
     const stav = hra.stav;
     hra.demo = true;
     nastavUrlDema(true);
-    $('mapa-chyba').hidden = true;
     hraj(stav);
-  });
+  };
+  $('btn-na-ukazku').addEventListener('click', prepniNaUkazku);
+  $('btn-presnost-ukazka').addEventListener('click', prepniNaUkazku);
   $('btn-jsme-tady').addEventListener('click', ukazMisto);
   $('btn-dojit').addEventListener('click', () => {
     const cil = aktualniZastaveni(hra.stav, hra.trasa);
