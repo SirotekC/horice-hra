@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://horice-hra/schema/trasa.schema.json",
+  "title": "Trasa městské hry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "nazev", "pro_koho", "delka_km", "cas_min", "poznamka_pro_rodice", "polomer_odemceni_m", "polomer_tlacitka_m", "cara", "zastaveni"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+    "nazev": { "type": "string", "minLength": 1 },
+    "pro_koho": { "type": "string", "minLength": 1 },
+    "delka_km": { "type": "number", "exclusiveMinimum": 0 },
+    "cas_min": { "type": "integer", "minimum": 1 },
+    "poznamka_pro_rodice": { "type": "string", "minLength": 1 },
+    "polomer_odemceni_m": { "type": "number", "exclusiveMinimum": 0 },
+    "polomer_tlacitka_m": { "type": "number", "exclusiveMinimum": 0 },
+    "cara": { "type": "array", "minItems": 2, "items": { "$ref": "#/$defs/bod" } },
+    "zastaveni": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/zastaveni" } }
+  },
+  "$defs": {
+    "bod": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "prefixItems": [
+        { "type": "number", "minimum": -90, "maximum": 90 },
+        { "type": "number", "minimum": -180, "maximum": 180 }
+      ]
+    },
+    "zastaveni": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "nazev", "poloha", "text", "ukol"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+        "nazev": { "type": "string", "minLength": 1 },
+        "poloha": { "$ref": "#/$defs/bod" },
+        "obrazek": { "type": ["string", "null"], "minLength": 1 },
+        "text": { "type": "string", "minLength": 1 },
+        "ukol": { "$ref": "#/$defs/ukol" }
+      }
+    },
+    "ukol": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["typ", "zadani"],
+      "properties": {
+        "typ": { "enum": ["cislo", "foto", "text"] },
+        "zadani": { "type": "string", "minLength": 1 },
+        "napoveda": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}
