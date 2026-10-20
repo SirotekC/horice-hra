@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2f6b4f">
+  <title>Jak by to mohlo vypadat – Hořice hravě</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/styl.css">
+  <style>
+    /* Statická ukázka atmosféry – nenapojená na hru. */
+
+    .ukazka {
+      max-width: 430px;
+      min-height: var(--vyska);
+      margin: 0 auto;
+      padding: 14px 16px max(16px, env(safe-area-inset-bottom));
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .ukazka-stitek {
+      align-self: center;
+      background: var(--fialova);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 800;
+      line-height: 1.3;
+      text-align: center;
+      padding: 8px 14px;
+      border-radius: 12px;
+      border: 2px dashed rgba(255, 255, 255, 0.7);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+      transform: rotate(-1.5deg);
+    }
+
+    .ukazka h1 { text-align: center; font-size: 28px; }
+
+    .ukazka-mapa {
+      display: block;
+      width: 100%;
+      height: auto;
+      filter: drop-shadow(0 3px 5px rgba(80, 50, 10, 0.3));
+    }
+
+    .ukazka-zastaveni {
+      list-style: none;
+      margin: -4px 0 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .ukazka-zastaveni li { display: flex; align-items: center; gap: 10px; }
+
+    .ukazka-zastaveni b {
+      flex: none;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--oranzova);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      border: 2px solid #fff;
+      box-shadow: var(--stin);
+    }
+
+    .pruvodce {
+      display: flex;
+      align-items: flex-end;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .pruvodce svg { flex: none; width: 104px; height: auto; }
+
+    .bublina {
+      position: relative;
+      flex: 1;
+      background: #fff;
+      border: 3px solid var(--zelena);
+      border-radius: 20px;
+      padding: 12px 14px;
+      margin-bottom: 46px;
+      font-size: 19px;
+      font-weight: 700;
+      line-height: 1.35;
+      color: var(--text);
+    }
+
+    .bublina::before,
+    .bublina::after {
+      content: "";
+      position: absolute;
+      left: -15px;
+      bottom: 12px;
+      border-style: solid;
+      border-width: 9px 16px 9px 0;
+      border-color: transparent var(--zelena) transparent transparent;
+    }
+
+    .bublina::after {
+      left: -10px;
+      border-width: 7px 12px 7px 0;
+      bottom: 14px;
+      border-color: transparent #fff transparent transparent;
+    }
+
+    .jmeno { color: var(--oranzova-tmava); white-space: nowrap; }
+
+    .ukazka .tlacitka { padding: 4px 0 0; margin-top: auto; }
+
+    a.btn { text-decoration: none; }
+  </style>
+</head>
+<body>
+  <main class="ukazka">
+    <p class="ukazka-stitek">Jen ukázka – postavička a příběh se teprve vymýšlí</p>
+
+    <h1>Mapa pokladu</h1>
+
+    <svg class="ukazka-mapa" viewBox="0 0 340 290" role="img"
+         aria-label="Kreslená mapka Hořic se třemi zastaveními: náměstí, Smetanovy sady a Gothard">
+      <defs>
+        <filter id="roztreseni" x="-5%" y="-5%" width="110%" height="110%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="7"/>
+          <feDisplacementMap in="SourceGraphic" scale="5"/>
+        </filter>
+        <radialGradient id="papir" cx="50%" cy="45%" r="70%">
+          <stop offset="0" stop-color="#fbf0cf"/>
+          <stop offset="0.75" stop-color="#f1dca6"/>
+          <stop offset="1" stop-color="#ddbf7c"/>
+        </radialGradient>
+        <g id="strom">
+          <rect x="-1.5" y="2" width="3" height="7" fill="#7a5532"/>
+          <circle r="7" fill="#6fae6a" stroke="#3f7a4a" stroke-width="1.5"/>
+          <circle cx="-2.5" cy="-2" r="2" fill="#8fc786"/>
+        </g>
+        <g id="smrk">
+          <rect x="-1.5" y="6" width="3" height="5" fill="#7a5532"/>
+          <path d="M0 -11 L8 7 H-8 Z" fill="#4f8f5b" stroke="#336b44" stroke-width="1.5" stroke-linejoin="round"/>
+        </g>
+      </defs>
+
+      <!-- Papír -->
+      <g filter="url(#roztreseni)">
+        <path d="M14 18 Q90 8 170 16 T326 14 Q334 80 328 150 T330 274 Q250 284 170 276 T12 278 Q6 210 12 140 T14 18 Z"
+              fill="url(#papir)" stroke="#a87c3d" stroke-width="2.5"/>
+      </g>
+      <!-- Zahnutý roh -->
+      <path d="M300 278 Q318 262 330 248 L330 274 Z" fill="#c9a35e" opacity="0.6"/>
+
+      <!-- Kopec Gothard -->
+      <g filter="url(#roztreseni)">
+        <path d="M220 236 Q250 168 288 166 Q316 168 334 214 L334 250 Q280 256 220 236 Z"
+              fill="#b9d39a" stroke="#6f9a55" stroke-width="2"/>
+        <path d="M244 214 q6 -4 12 0 M290 196 q6 -4 12 0 M268 228 q6 -4 12 0"
+              fill="none" stroke="#6f9a55" stroke-width="1.6" stroke-linecap="round"/>
+      </g>
+
+      <!-- Dekorace: stromy a kopečky -->
+      <path d="M26 230 q14 -18 28 0 M48 236 q12 -14 24 0" fill="none" stroke="#a87c3d" stroke-width="2" stroke-linecap="round"/>
+      <use href="#smrk" x="34" y="196"/>
+      <use href="#smrk" x="50" y="204"/>
+      <use href="#strom" x="118" y="96"/>
+      <use href="#strom" x="246" y="70"/>
+      <use href="#strom" x="262" y="82"/>
+      <use href="#smrk" x="104" y="250"/>
+
+      <!-- Smetanovy sady: hlouček stromů -->
+      <use href="#strom" x="160" y="152"/>
+      <use href="#strom" x="176" y="144"/>
+      <use href="#strom" x="210" y="150"/>
+      <use href="#strom" x="152" y="196"/>
+      <use href="#strom" x="214" y="196"/>
+      <use href="#strom" x="198" y="208"/>
+      <path d="M170 204 h16" stroke="#7a5532" stroke-width="3" stroke-linecap="round"/>
+      <path d="M172 204 v4 M184 204 v4" stroke="#7a5532" stroke-width="2"/>
+
+      <!-- Cesta (čárkovaná) -->
+      <path d="M66 112 C88 150 122 120 146 150 S170 186 190 176 S230 170 248 196 S266 212 280 196"
+            fill="none" stroke="#b5532a" stroke-width="3.5" stroke-dasharray="9 8" stroke-linecap="round"/>
+      <!-- Šipka u cíle -->
+      <path d="M268 190 l12 6 -6 -12" fill="none" stroke="#b5532a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+      <!-- Náměstí: domečky a radnice s věží -->
+      <g stroke="#6b4a2a" stroke-width="1.8" stroke-linejoin="round">
+        <rect x="28" y="70" width="18" height="18" fill="#f6d7a7"/>
+        <path d="M26 71 L37 60 L48 71 Z" fill="#c8553d"/>
+        <rect x="82" y="72" width="18" height="16" fill="#f6d7a7"/>
+        <path d="M80 73 L91 62 L102 73 Z" fill="#c8553d"/>
+        <!-- radnice -->
+        <rect x="48" y="62" width="32" height="26" fill="#fbe3bb"/>
+        <rect x="58" y="40" width="12" height="24" fill="#fbe3bb"/>
+        <path d="M56 41 L64 26 L72 41 Z" fill="#c8553d"/>
+        <circle cx="64" cy="50" r="4" fill="#fff"/>
+        <path d="M64 48 v2 h2" fill="none" stroke-width="1.2"/>
+        <path d="M60 88 v-9 q4 -5 8 0 v9" fill="#8a5a33"/>
+        <rect x="52" y="68" width="5" height="5" fill="#9fd0e6"/>
+        <rect x="71" y="68" width="5" height="5" fill="#9fd0e6"/>
+      </g>
+      <path d="M64 26 v-8" stroke="#6b4a2a" stroke-width="1.6"/>
+      <path d="M64 18 l9 3 -9 3 Z" fill="#e8892b"/>
+
+      <!-- Gothard: brána na kopci -->
+      <g stroke="#6b4a2a" stroke-width="1.8" stroke-linejoin="round">
+        <path d="M280 182 v-22 q12 -16 24 0 v22 Z" fill="#e7e0d2"/>
+        <path d="M286 182 v-14 q6 -9 12 0 v14 Z" fill="#7a6a58"/>
+        <path d="M276 160 h32" />
+      </g>
+
+      <!-- Truhla s pokladem -->
+      <g transform="translate(306 214) rotate(-6)" stroke="#5a3a1c" stroke-width="1.6" stroke-linejoin="round">
+        <rect x="-11" y="-2" width="22" height="13" rx="2" fill="#b0743a"/>
+        <path d="M-11 -2 q11 -11 22 0 Z" fill="#c98a48"/>
+        <rect x="-2.5" y="-2" width="5" height="6" fill="#f6c453"/>
+      </g>
+      <g fill="#f6c453" stroke="#c99a20" stroke-width="1">
+        <path d="M318 196 l2 4 4 .5 -3 3 .8 4 -3.8 -2 -3.8 2 .8 -4 -3 -3 4 -.5 Z"/>
+      </g>
+
+      <!-- Stuha s názvem -->
+      <g transform="translate(190 42) rotate(-3)">
+        <path d="M-58 -2 L-72 -12 L-66 2 L-72 14 L-50 12 Z" fill="#c96f17"/>
+        <path d="M58 -2 L72 -12 L66 2 L72 14 L50 12 Z" fill="#c96f17"/>
+        <path d="M-54 -12 Q0 -20 54 -12 L54 10 Q0 2 -54 10 Z" fill="#e8892b" stroke="#a85a12" stroke-width="1.5"/>
+        <text y="3" font-family="system-ui, sans-serif" font-size="15" font-weight="800" fill="#fff"
+              text-anchor="middle" letter-spacing="1">HOŘICE</text>
+      </g>
+      <!-- Ptáčci -->
+      <path d="M150 92 q4 -4 8 0 q4 -4 8 0 M200 80 q3 -3 6 0 q3 -3 6 0" fill="none" stroke="#6b4a2a" stroke-width="1.6" stroke-linecap="round"/>
+
+      <!-- Kompas -->
+      <g transform="translate(296 52)">
+        <circle r="20" fill="#fbf0cf" stroke="#a87c3d" stroke-width="2"/>
+        <path d="M0 -17 L5 0 L0 17 L-5 0 Z" fill="#c8553d"/>
+        <path d="M0 -17 L5 0 L0 0 Z" fill="#8f3524"/>
+        <path d="M-17 0 L0 4 L17 0 L0 -4 Z" fill="#a87c3d"/>
+        <circle r="2.5" fill="#fbf0cf" stroke="#6b4a2a" stroke-width="1"/>
+        <text y="-23" font-size="12" font-weight="800" text-anchor="middle" fill="#6b4a2a" font-family="system-ui, sans-serif">S</text>
+      </g>
+
+      <!-- Značky zastavení -->
+      <g font-family="system-ui, sans-serif" font-weight="800" text-anchor="middle">
+        <g transform="translate(66 112)">
+          <circle r="13" fill="#e8892b" stroke="#fff" stroke-width="3"/>
+          <text y="5.5" font-size="15" fill="#fff">1</text>
+        </g>
+        <g transform="translate(190 176)">
+          <circle r="13" fill="#e8892b" stroke="#fff" stroke-width="3"/>
+          <text y="5.5" font-size="15" fill="#fff">2</text>
+        </g>
+        <g transform="translate(292 196)">
+          <circle r="13" fill="#e8892b" stroke="#fff" stroke-width="3"/>
+          <text y="5.5" font-size="15" fill="#fff">3</text>
+        </g>
+      </g>
+
+      <!-- Popisky -->
+      <g font-family="system-ui, sans-serif" font-weight="700" font-size="13" fill="#5a3a1c" text-anchor="middle">
+        <text x="66" y="142">Náměstí</text>
+        <text x="190" y="236">Smetanovy sady</text>
+        <text x="276" y="258">Gothard</text>
+      </g>
+
+      <!-- Start -->
+      <text x="34" y="128" font-family="system-ui, sans-serif" font-size="11" font-weight="800" fill="#b5532a"
+            text-anchor="middle" transform="rotate(-12 34 128)">START</text>
+    </svg>
+
+    <ol class="ukazka-zastaveni" aria-label="Zastavení">
+      <li><b>1</b> Náměstí Jiřího z Poděbrad (radnice)</li>
+      <li><b>2</b> Smetanovy sady (socha Krakonoše)</li>
+      <li><b>3</b> Hřbitovní portál na Gothardu</li>
+    </ol>
+
+    <div class="pruvodce">
+      <!-- Zástupná postavička: kamínek s očima (sochařská tradice Hořic) -->
+      <svg viewBox="0 0 110 120" role="img" aria-label="Postavička průvodce – kamínek s očima">
+        <ellipse cx="55" cy="112" rx="38" ry="6" fill="rgba(0,0,0,0.15)"/>
+        <!-- nožičky -->
+        <ellipse cx="38" cy="108" rx="10" ry="6" fill="#8d877d"/>
+        <ellipse cx="72" cy="108" rx="10" ry="6" fill="#8d877d"/>
+        <!-- tělo -->
+        <path d="M18 70 C14 36 34 14 58 14 C84 14 100 38 96 70 C93 96 76 106 56 106 C34 106 20 96 18 70 Z"
+              fill="#b9b2a6" stroke="#6f685e" stroke-width="3"/>
+        <path d="M30 40 C36 28 46 22 56 21" fill="none" stroke="#e3ddd2" stroke-width="5" stroke-linecap="round"/>
+        <!-- skvrnky -->
+        <circle cx="80" cy="84" r="3" fill="#a29b8f"/>
+        <circle cx="30" cy="80" r="2.5" fill="#a29b8f"/>
+        <circle cx="74" cy="34" r="2" fill="#a29b8f"/>
+        <!-- mávající ručička -->
+        <path d="M95 60 Q106 50 104 38" fill="none" stroke="#6f685e" stroke-width="5" stroke-linecap="round"/>
+        <circle cx="104" cy="36" r="5" fill="#b9b2a6" stroke="#6f685e" stroke-width="2.5"/>
+        <path d="M20 66 Q10 72 12 82" fill="none" stroke="#6f685e" stroke-width="5" stroke-linecap="round"/>
+        <!-- oči -->
+        <ellipse cx="44" cy="56" rx="8" ry="10" fill="#fff" stroke="#3b3631" stroke-width="2"/>
+        <ellipse cx="70" cy="56" rx="8" ry="10" fill="#fff" stroke="#3b3631" stroke-width="2"/>
+        <circle cx="46" cy="58" r="4.5" fill="#2b2622"/>
+        <circle cx="72" cy="58" r="4.5" fill="#2b2622"/>
+        <circle cx="47.5" cy="56" r="1.6" fill="#fff"/>
+        <circle cx="73.5" cy="56" r="1.6" fill="#fff"/>
+        <!-- tvářičky a úsměv -->
+        <ellipse cx="34" cy="74" rx="6" ry="4" fill="#f2a3a0" opacity="0.8"/>
+        <ellipse cx="80" cy="74" rx="6" ry="4" fill="#f2a3a0" opacity="0.8"/>
+        <path d="M48 76 Q57 86 66 76" fill="#8f3524" stroke="#3b3631" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- mech na temeni -->
+        <path d="M46 17 q4 -8 10 -4 q4 -6 10 0 q4 0 4 4 Z" fill="#7fb36a" stroke="#4f8a4a" stroke-width="1.5"/>
+      </svg>
+      <p class="bublina">Ahoj, já jsem <span class="jmeno">[jméno]</span> a dnes tě provedu Hořicemi!</p>
+    </div>
+
+    <div class="tlacitka">
+      <a class="btn btn--vedlejsi" href="index.html">← Zpět</a>
+    </div>
+  </main>
+</body>
+</html>
