@@ -8,7 +8,7 @@ Adresa hry: <https://sirotekc.github.io/horice-hra/> (z QR kódu nebo odkazu).
 
 - Zapnutá poloha v telefonu, mobilní data, nabitá baterie.
 - Mapy.com klíč vložený v `site/js/config.js` (viz konec dokumentu); bez klíče se použije záložní mapa OpenStreetMap, což je také dobré vyzkoušet.
-- Před každým kolem vymazat data stránky (nebo „Začít znovu“), ať se začíná čistě.
+- Před každým kolem vymazat data stránky, ať se začíná čistě. Tlačítko „Začít znovu“ se objeví jen tehdy, když je uložený postup (např. po obnovení stránky).
 
 ## 1. Otevření a ukázkový režim (u stolu)
 
@@ -30,12 +30,12 @@ Adresa hry: <https://sirotekc.github.io/horice-hra/> (z QR kódu nebo odkazu).
 | Povolit polohu | Na mapě je vidět moje poloha, mapa se vystředí | | | |
 | Jít k 1. zastavení | Vzdálenost k zastavení se při chůzi průběžně zmenšuje | | | |
 | Náměstí: dojít ke značce (do 30 m) | Automaticky „Na místě“, nabídne se úkol | | | |
-| Náměstí: úkol – číslo popisné radnice | Číslo se zadá, správná odpověď projde, špatná dá nápovědu | | | |
+| Náměstí: úkol – číslo popisné radnice | „Hotovo“ je neaktivní, dokud je pole prázdné; po zadání libovolného čísla se aktivuje a odpověď se přijme (správnost se nekontroluje); „Nápověda“ ukáže nápovědu | | | |
 | „Jsme tady“ (stát dál než 30 m, ale do 80 m) | Záložní tlačítko se objeví a odemkne úkol | | | |
 | Smetanovy sady: dojít k Krakonošovi | Automaticky „Na místě“ | | | |
 | Smetanovy sady: úkol – foto Krakonoše | Telefon se zeptá na povolení fotoaparátu, fotka se pořídí a zobrazí | | | |
 | Gothard: dojít k portálu | Automaticky „Na místě“ | | | |
-| Gothard: úkol – text z portálu | Text se zadá a ověří | | | |
+| Gothard: úkol – text z portálu | „Hotovo“ je neaktivní, dokud je pole prázdné; libovolný vyplněný text se přijme (správnost se nekontroluje); „Nápověda“ ukáže nápovědu | | | |
 | Varování o přesnosti GPS (např. v Gothardské ulici nebo pod stromy) | Zobrazí se upozornění, že poloha je nepřesná; „Jsme tady“ pomůže | | | |
 | Zamknout telefon, po chvíli se vrátit | Hra běží dál, poloha se obnoví, stav hry zůstal | | | |
 | Obnovit stránku uprostřed hry | Úvodní obrazovka nabídne „Pokračovat“ na správném zastavení, fotky zůstaly | | | |
